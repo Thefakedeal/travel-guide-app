@@ -5,6 +5,12 @@ const { randomString } = require("../../utils/random");
 const bcrypt = require("bcrypt");
 const {userAuth} = require('../../middlewares')
 
+const ROLES = ["VISITOR", "GUIDE"]
+
+
+router.get('/roles', (req, res)=>{
+  return res.json({roles: ROLES})
+})
 
 const validEmail = body("email")
   .normalizeEmail()
@@ -24,8 +30,13 @@ const validEmailUnique = validEmail
     return true;
   })
   .withMessage("Email Already in use");
-
 const nameReq = body("name").notEmpty();
+
+const roleAuth = body('role').custom((value=>{
+  if(value==null || value==undefined) return true;
+  if(ROLES.includes(value)) return true;
+  return Promise.reject("Invalid Role")
+}))
 
 const validPassword = body("password").isString().isLength({ min: 8 });
 
@@ -34,6 +45,7 @@ router.post(
   nameReq,
   validPassword,
   validEmailUnique,
+  roleAuth,
   async (req, res, next) => {
     try {
       const errors = validationResult(req);
@@ -43,7 +55,7 @@ router.post(
           .json({ message: "Validation Error", errors: errors.array() });
       }
 
-      const { name, email, password } = req.body;
+      const { name, email, password, role } = req.body;
       const salt = await bcrypt.genSalt();
       const hashedPassword = await bcrypt.hash(password, salt);
       const token = randomString(40);
@@ -53,6 +65,7 @@ router.post(
           name: name,
           email: email,
           password: hashedPassword,
+          role: role,
           Token: {
             create: {
               token: token,
