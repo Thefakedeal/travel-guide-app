@@ -3,6 +3,8 @@ const { body, validationResult } = require("express-validator");
 const db = require("../../client/index");
 const { randomString } = require("../../utils/random");
 const bcrypt = require("bcrypt");
+const {userAuth} = require('../../middlewares')
+
 
 const validEmail = body("email")
   .normalizeEmail()
@@ -92,6 +94,20 @@ router.post("/login", validEmail, async (req, res, next) => {
   }
 });
 
-router.post("/logout", (req, res, next) => {});
+router.post("/logout",userAuth,async (req, res, next) => {
+
+    try{
+        const token = req.token;
+        const deleteToken = await db.token.delete({
+            where:{
+                token: token
+            }
+        })
+        return res.json({message:"Logout successful"})
+    }catch(err){
+        next(err)
+    }
+
+});
 
 module.exports = router;
