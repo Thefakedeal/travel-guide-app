@@ -1,4 +1,5 @@
 const { PrismaClient } = require('@prisma/client')
+const { faker } = require('@faker-js/faker');
 const prisma = new PrismaClient()
 const bcrypt = require('bcrypt')
 
@@ -9,6 +10,7 @@ async function main() {
     create: {
       email: 'admin@admin.com',
       name: 'Admin',
+      role: "ADMIN",
       password: await bcrypt.hash('password',10)
     },
   })
@@ -18,7 +20,8 @@ async function main() {
     update: {},
     create: {
       email: 'visitor@visitor.com',
-      name: 'VISITOR',
+      name: 'Visitor',
+      role:"VISITOR",
       password: await bcrypt.hash('password',10)
     },
   })
@@ -28,11 +31,23 @@ async function main() {
     update: {},
     create: {
       email: 'guide@guide.com',
-      name: 'GUIDE',
+      name: 'Guide',
+      role: "GUIDE",
       password: await bcrypt.hash('password',10)
     },
   })
   
+  const cities = Array.apply(null, Array(5)).map(function () {
+
+    return {
+      name: faker.address.city()
+    }
+  })
+
+  const city = await prisma.city.createMany({
+    data: cities
+  })
+
   console.log({ admin,visitor,guide })
 }
 
