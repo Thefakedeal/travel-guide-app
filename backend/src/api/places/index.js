@@ -21,7 +21,11 @@ const featured = body('featured').isBoolean().optional({nullable: true})
 
 router.get('/', async (req,res,next)=>{
     try{
-        const places = await db.place.findMany()
+        const places = await db.place.findMany({
+            where: {
+                cityId: req.query.cityId != null ?Number(req.query.cityId):undefined
+            }
+        })
         return res.json({"data": places})
     }catch(err){
         next(err)
