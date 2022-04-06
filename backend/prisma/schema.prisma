@@ -37,6 +37,8 @@ model City {
 
   Place Place[]
   User  User[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Place {
@@ -45,6 +47,8 @@ model Place {
   cityId Int
   featured Boolean @default(false)
   city   City   @relation(fields: [cityId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 enum Role {
