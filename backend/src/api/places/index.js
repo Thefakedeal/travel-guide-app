@@ -17,6 +17,23 @@ const cityRequired = body('cityId').notEmpty().custom(async (value) =>{
       return true;
 })
 
+const experiencesExists = body('experiences').isArray().custom(async (value)=>{
+    if(!Array.isArray(value))  return Promise.reject("Experience Doesn't exist");
+    
+      for (const item of value) {
+        const experience = await db.experience.findUnique({
+            where: {
+              id: item,
+            },
+          });
+          if (!experience) {
+            return Promise.reject("Experience Doesn't exist");
+          }
+      }
+         
+      return true;
+})
+
 const featured = body('featured').isBoolean().optional({nullable: true})
 
 router.get('/', async (req,res,next)=>{
@@ -128,9 +145,16 @@ router.delete('/:id', async (req,res, next)=>{
     }
 })
 
-router.post('/:id/experiences', async(req, res, next)=>{
+router.post('/:id/experiences', experiencesExists, async(req, res, next)=>{
     try{
 
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+          return res
+            .status(400)
+            .json({ message: "Validation Error", errors: errors.array() });
+        }
+        
         const { experiences } = req.body;
 
         const experiencesObj = experiences.map(experience=>{
@@ -159,8 +183,15 @@ router.post('/:id/experiences', async(req, res, next)=>{
     }
 })
 
-router.delete('/:id/experiences', async(req, res, next)=>{
+router.delete('/:id/experiences', experiencesExists,async(req, res, next)=>{
     try{
+
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+          return res
+            .status(400)
+            .json({ message: "Validation Error", errors: errors.array() });
+        }
 
         const { experiences } = req.body;
 

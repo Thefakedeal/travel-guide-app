@@ -30,7 +30,9 @@ const validEmailUnique = validEmail
     return true;
   })
   .withMessage("Email Already in use");
+
 const nameReq = body("name").notEmpty();
+
 
 const roleAuth = body('role').custom((value=>{
   if(value==null || value==undefined) return true;
@@ -38,7 +40,23 @@ const roleAuth = body('role').custom((value=>{
   return Promise.reject("Invalid Role")
 }))
 
+
 const validPassword = body("password").isString().isLength({ min: 8 });
+
+const cityForGuides = body("cityId").if((value, {req})=>{
+  return req.body.role ==='GUIDE' 
+}).custom(async (value) =>{
+  if(!value)  return Promise.reject("City Doesn't exist");
+  const city = await db.city.findUnique({
+      where: {
+        id: value,
+      },
+    });
+    if (!city) {
+      return Promise.reject("City Doesn't exist");
+    }
+    return true;
+})
 
 router.post(
   "/signup",
@@ -46,6 +64,7 @@ router.post(
   validPassword,
   validEmailUnique,
   roleAuth,
+  cityForGuides,
   async (req, res, next) => {
     try {
       const errors = validationResult(req);
@@ -55,7 +74,7 @@ router.post(
           .json({ message: "Validation Error", errors: errors.array() });
       }
 
-      const { name, email, password, role } = req.body;
+      const { name, email, password, role, cityId } = req.body;
       const salt = await bcrypt.genSalt();
       const hashedPassword = await bcrypt.hash(password, salt);
       const token = randomString(40);
@@ -66,6 +85,7 @@ router.post(
           email: email,
           password: hashedPassword,
           role: role,
+          cityId : cityId,
           Token: {
             create: {
               token: token,
