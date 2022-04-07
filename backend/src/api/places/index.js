@@ -1,7 +1,7 @@
 const router  = require('express').Router();
-const {body, validationResult} = require('express-validator')
+const {body, check,validationResult} = require('express-validator')
 const db = require('../../client')
-
+const upload = require('../../utils/multer')
 const nameRequired = body('name').notEmpty().trim();
 
 const cityRequired = body('cityId').notEmpty().custom(async (value) =>{
@@ -220,5 +220,51 @@ router.delete('/:id/experiences', experiencesExists,async(req, res, next)=>{
         next(err)
     }
 })
+
+const photoUpload = upload.array("images", 10);
+
+const filesRequired = check("images")
+  .custom((value, { req }) => {
+    if (req.files.length > 0) return true;
+    return false;
+  })
+  .withMessage("Images are required");
+
+router.post('/:id/images',photoUpload, filesRequired, async(req,res, next)=>{
+    try{
+        
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+          return res
+            .status(400)
+            .json({ message: "Validation Error", errors: errors.array() });
+        }
+
+        const uploadedImages = req.files;
+
+        const place = await db.place.update({
+            where:{
+                id:  Number(req.params.id)
+            },
+            data:{
+                Image: {
+                    create: uploadedImages.map(img=>{
+                        return {
+                            src: `/images/${img.filename}`,
+                        }
+                    })
+                }
+            }, 
+            include:{
+                Image: true
+            }
+        })
+
+        return res.json({message:"Photos Uploaded", data: place})
+    }catch(err){
+        next(err)
+    }
+})
+
 
 module.exports = router;
