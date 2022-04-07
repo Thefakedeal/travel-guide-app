@@ -21,10 +21,20 @@ const featured = body('featured').isBoolean().optional({nullable: true})
 
 router.get('/', async (req,res,next)=>{
     try{
+        const experienceFilter={};
+        if(req.query.experienceId != null && req.query.experienceId != null){
+            experienceFilter.some = {
+                id: (req.query.experienceId != null && req.query.experienceId != null) ? Number(req.query.experienceId): undefined
+            }
+        }
         const places = await db.place.findMany({
             where: {
-                cityId: req.query.cityId != null ?Number(req.query.cityId):undefined
-            }
+                cityId: req.query.cityId != null ?Number(req.query.cityId):undefined,
+                experience:experienceFilter
+            },
+            include:{
+                experience: true
+            } 
         })
         return res.json({"data": places})
     }catch(err){
@@ -118,5 +128,66 @@ router.delete('/:id', async (req,res, next)=>{
     }
 })
 
+router.post('/:id/experiences', async(req, res, next)=>{
+    try{
+
+        const { experiences } = req.body;
+
+        const experiencesObj = experiences.map(experience=>{
+            return {
+                id: Number(experience)
+            }
+        })
+       
+        const place = await db.place.update({
+            where:{
+                id: Number(req.params.id)
+            },
+            data:{
+                experience:{
+                    connect: experiencesObj
+                }
+            },
+            include:{
+                experience: true
+            }
+        })
+
+        res.json({message: "Experiences connected", data: place})
+    }catch(err){
+        next(err)
+    }
+})
+
+router.delete('/:id/experiences', async(req, res, next)=>{
+    try{
+
+        const { experiences } = req.body;
+
+        const experiencesObj = experiences.map(experience=>{
+            return {
+                id: Number(experience)
+            }
+        })
+
+        const place = await db.place.update({
+            where:{
+                id: Number(req.params.id)
+            },
+            data:{
+                experience:{
+                    disconnect: experiencesObj
+                }
+            },
+            include:{
+                experience: true
+            }
+        })
+
+        res.json({message: "Experiences removed", data: place})
+    }catch(err){
+        next(err)
+    }
+})
 
 module.exports = router;

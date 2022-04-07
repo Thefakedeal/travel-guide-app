@@ -30,7 +30,6 @@ router.get('/:id', async (req,res,next)=>{
     }
 })
 
-
 router.post('/',typeRequired , async (req,res, next)=>{
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -52,7 +51,6 @@ router.post('/',typeRequired , async (req,res, next)=>{
         next(err)
     }
 })
-
 
 router.put('/:id',typeRequired ,async (req,res, next)=>{
     const errors = validationResult(req);
@@ -78,7 +76,6 @@ router.put('/:id',typeRequired ,async (req,res, next)=>{
         next(err)
     }
 })
-
 
 router.delete('/:id', async (req,res, next)=>{
     try{
