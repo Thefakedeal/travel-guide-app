@@ -64,7 +64,11 @@ router.get('/:id', async (req,res,next)=>{
         const place = await db.place.findUnique({
             where: {
                 id: Number(req.params.id)
-            }
+            },
+            include:{
+                experience: true, 
+                image: true
+            } 
         });
         if(!place) {
             res.status(404)
@@ -247,7 +251,7 @@ router.post('/:id/images',photoUpload, filesRequired, async(req,res, next)=>{
                 id:  Number(req.params.id)
             },
             data:{
-                Image: {
+                image: {
                     create: uploadedImages.map(img=>{
                         return {
                             src: `/images/${img.filename}`,
@@ -256,7 +260,7 @@ router.post('/:id/images',photoUpload, filesRequired, async(req,res, next)=>{
                 }
             }, 
             include:{
-                Image: true
+                image: true
             }
         })
 
