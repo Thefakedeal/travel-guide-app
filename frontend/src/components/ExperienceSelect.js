@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { doGet } from '../utils/request';
-
-export default function ExperienceSelect({onChange}) {
+import { Select } from 'antd'
+export default function ExperienceSelect({handleChange}) {
    const [experiences, setExperiences]=  useState([]);
 
  
@@ -22,13 +22,13 @@ export default function ExperienceSelect({onChange}) {
    },[])
 
   return (
-    <select onChange={onChange} defaultValue={null} className="form-select" aria-label="Select Experience">
-        <option value={null} >Select Experience</option>
-        {
+      <Select defaultValue={null} onChange={handleChange} placeholder="Select Experience" style={{ width:"100%" }}> 
+          <Select.Option value={null} >Select Experience</Select.Option>
+          {
             experiences.map(experience=>(
-                <option value={experience.id} key={Math.random()}> {experience.type} </option>
+                <Select.Option value={experience.id} key={Math.random()}> {experience.type} </Select.Option>
             ))
         }
-    </select>
+      </Select>
   )
 }

@@ -1,7 +1,8 @@
+import { Select } from 'antd';
 import React, { useEffect, useState } from 'react'
 import { doGet } from '../utils/request';
 
-export default function CitySelect({onChange}) {
+export default function CitySelect({handleChange}) {
    const [cities, setCities]=  useState([]);
 
  
@@ -22,13 +23,13 @@ export default function CitySelect({onChange}) {
    },[])
 
   return (
-    <select onChange={onChange} defaultValue={null} className="form-select" aria-label="Select City">
-        <option value={null} >Select City</option>
+    <Select defaultValue={null} onChange={handleChange} placeholder="Select City" style={{ width:"100%" }}> 
+        <Select.Option value={null} >Select City</Select.Option>
         {
-            cities.map(city=>(
-                <option value={city.id} key={Math.random()}> {city.name} </option>
-            ))
-        }
-    </select>
+        cities.map(cities=>(
+            <Select.Option value={cities.id} key={Math.random()}> {cities.name} </Select.Option>
+        ))
+    }
+    </Select>
   )
 }
