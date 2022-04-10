@@ -39,6 +39,12 @@ export function doPostForm({method= 'POST', body, path='',token=''}){
 }
 
 export function doGet({query={},path='',token=''}){
+  
+    Object.keys(query).forEach(key => {
+      if (query[key] === null || query[key] === '' || query[key] === undefined) {
+        delete query[key];
+      }
+    });
     const params = new URLSearchParams(query).toString();
     const url = new URL(path, baseUrl).toString();
 

@@ -2,7 +2,7 @@ import { Select } from 'antd';
 import React, { useEffect, useState } from 'react'
 import { doGet } from '../utils/request';
 
-export default function CitySelect({handleChange}) {
+export default function CitySelect({handleChange, value}) {
    const [cities, setCities]=  useState([]);
 
  
@@ -23,11 +23,11 @@ export default function CitySelect({handleChange}) {
    },[])
 
   return (
-    <Select defaultValue={null} onChange={handleChange} placeholder="Select City" style={{ width:"100%" }}> 
+    <Select defaultValue={value && Number(value)} onChange={handleChange} placeholder="Select City" style={{ width:"100%" }}> 
         <Select.Option value={null} >Select City</Select.Option>
         {
         cities.map(cities=>(
-            <Select.Option value={cities.id} key={Math.random()}> {cities.name} </Select.Option>
+            <Select.Option value={Number(cities.id)} key={Math.random()}> {cities.name} </Select.Option>
         ))
     }
     </Select>
