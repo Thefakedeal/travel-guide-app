@@ -13,7 +13,10 @@ const links = [
     label: "Places",
     path: '/places'
   },
-  
+  {
+    label: "Login",
+    path: '/login'
+  }
 ]
 
 export default function Navbar() {
@@ -22,15 +25,15 @@ export default function Navbar() {
   const close = ()=>setVisible(false)
   return (
     <header className={styles.container}>
-        <ul className={`${styles.navlinks}  ms-auto d-none d-lg-flex me-4`}>
+        <div className={`${styles.navlinks}  ms-auto d-none d-lg-flex me-4`}>
           { 
           links.map(link=>(
-            <li key={link.label} className='mx-1'>
-                <Link to={link.path}>{link.label}</Link>
-            </li>
+            
+                <Link className='mx-2' key={link.label} to={link.path}>{link.label}</Link>
+           
           )) 
           }
-        </ul>
+        </div>
         <GiHamburgerMenu onClick={open}  className='fs-1 ms-auto me-4 text-white d-lg-none'/>
        {visible &&  <Navscreen links={links} handleClose={close}/>}
     </header>
