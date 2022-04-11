@@ -18,6 +18,11 @@ const links = [
     label: "Login",
     path: '/login',
     guest: true
+  },
+  {
+    label: "Admin",
+    path: '/admin',
+    admin: true
   }
 ]
 
@@ -25,13 +30,14 @@ export default function Navbar() {
   const [visible, setVisible] = useState(false)
   const open = ()=>setVisible(true)
   const close = ()=>setVisible(false)
-  const {user} = useUser()
+  const {user, isAdmin} = useUser()
   return (
     <header className={styles.container}>
         <div className={`${styles.navlinks}  ms-auto d-none d-lg-flex me-4`}>
           { 
           links.filter(link=>{
             if(link.guest && user) return false;
+            if(link.admin && !isAdmin) return false;
             return true;
           })
           .map(link=>(

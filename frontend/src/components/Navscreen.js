@@ -2,7 +2,9 @@ import styles from "../styles/Navscreen.module.scss";
 import { ImCross } from "react-icons/im";
 import Backdrop from "./Backdrop";
 import { Link } from "react-router-dom";
+import useUser from "../hooks/useUser";
 export default function Navscreen({ handleClose, links = [] }) {
+  const {user} = useUser();
   return (
     <Backdrop className={`d-lg-none`}>
       <ImCross
