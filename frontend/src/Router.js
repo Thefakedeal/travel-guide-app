@@ -1,5 +1,7 @@
 import React from 'react'
 import {Route, Routes} from 'react-router-dom'
+import Auth from './components/ProtectedRoutes/Auth'
+import Guest from './components/ProtectedRoutes/Guest'
 import Home from './Layouts/Home'
 import LandingPage from './pages/LandingPage'
 import LoginPage from './pages/LoginPage'
@@ -12,8 +14,8 @@ export default function Router() {
         <Route path="/" element={<Home />}>
           <Route index element={<LandingPage />} />
           <Route path="/places" element={<PlacesPage />} />
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/register" element={<RegisterPage />} />
+          <Route path="/login" element={<Guest element={<LoginPage />}/>} />
+          <Route path="/register" element={<Guest element={<RegisterPage />}/>} />
         </Route>
     </Routes>
   )
