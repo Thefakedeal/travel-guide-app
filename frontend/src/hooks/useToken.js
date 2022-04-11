@@ -1,15 +1,20 @@
 import { useEffect, useState } from "react"
-
+import {useSelector,useDispatch} from 'react-redux'
+import {setToken as saveToken, setUser, deleteToken} from '../redux/authSlice'
 
 export default function useToken() {
- const [token, setToken] = useState(localStorage.getItem('token') || '')
+
+ const [token, setToken] = useState(useSelector(state=>state.auth.token))
+ const dispatch = useDispatch()
+
 
  useEffect(()=>{
     if(!token){
-        localStorage.removeItem(token)
+        dispatch(deleteToken())
     }else{
-        localStorage.setItem('token',token)
+        dispatch(saveToken(token))
     }
  }, [token])
+ 
  return [token, setToken]
 }

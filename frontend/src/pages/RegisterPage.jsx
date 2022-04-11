@@ -69,7 +69,7 @@ export default function RegisterPage() {
                    ({isSubmitting,handleSubmit, dirty, isValid})=>(
                     
                     <Form className='w-100 px-2'>
-                    <h5 className=" text-center">Login</h5>
+                    <h5 className=" text-center">Register</h5>
                     {error && 
                         <span className="text-danger">{error}</span>
                     }
@@ -94,12 +94,12 @@ export default function RegisterPage() {
                     </div>
 
                     <br />
-                    <Button type='primary' onClick={handleSubmit} className='w-100 my-2' loading={isSubmitting} disabled={isSubmitting || !isValid || !dirty}> Login </Button>
+                    <Button type='primary' onClick={handleSubmit} className='w-100 my-2' loading={isSubmitting} disabled={isSubmitting || !isValid || !dirty}> Register </Button>
                     </Form>
                    )
                }
             </Formik>
-            <Link to={"/register"} className='text-center'>Back to Login</Link>
+            <Link to={"/login"} className='text-center'>Back to Login</Link>
         </div>
     </section>
   )
