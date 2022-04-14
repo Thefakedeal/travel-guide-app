@@ -55,11 +55,18 @@ router.get("/", async (req, res, next) => {
     }
     const places = await db.place.findMany({
       where: {
+        name:{
+          contains: req.query.name !== null? req.query.name:undefined
+        },
         cityId: req.query.cityId != null ? Number(req.query.cityId) : undefined,
         experience: experienceFilter,
       },
       include: {
+      city:true,
         experience: true,
+        image:{
+          take:1
+        }
       },
     });
     return res.json({ data: places });

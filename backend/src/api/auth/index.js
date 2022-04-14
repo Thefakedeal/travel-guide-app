@@ -127,6 +127,18 @@ router.post("/login", validEmail, async (req, res, next) => {
   }
 });
 
+router.get("/user",userAuth,async (req, res, next) => {
+
+    try{
+        const user = req.user;
+        return res.json({data:user})
+    }catch(err){
+        next(err)
+    }
+
+});
+
+
 router.post("/logout",userAuth,async (req, res, next) => {
 
     try{
