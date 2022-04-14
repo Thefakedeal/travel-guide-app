@@ -8,7 +8,9 @@ import LoginPage from './pages/LoginPage'
 import AdminLandingPage  from './pages/admin/LandingPage'
 import PlacesPage from './pages/PlacesPage'
 import RegisterPage from './pages/RegisterPage'
-
+import AdminPlaces from './pages/admin/places/Index'
+import AdminCreatePlaces from './pages/admin/places/Create'
+import AdminEditPlaces from './pages/admin/places/Edit'
 export default function Router() {
   return (
     <Routes> 
@@ -20,7 +22,9 @@ export default function Router() {
         </Route>
         <Route path="/admin" element={<Home />}>
           <Route index element={<AdminLandingPage />} />
-          
+          <Route path="places" element={<AdminPlaces />} />
+          <Route path="places/create" element={<AdminCreatePlaces />} />
+          <Route path="places/:id" element={<AdminEditPlaces />} />
         </Route>
     </Routes>
   )
