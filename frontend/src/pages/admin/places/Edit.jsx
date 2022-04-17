@@ -6,7 +6,8 @@ import useFetch from "../../../hooks/useFetch";
 import useToken from "../../../hooks/useToken";
 import { doPost } from "../../../utils/request";
 import {useParams} from 'react-router-dom';
-
+import UploadImage from '../../../components/section/admin/places/UploadImage'
+import ErrorBoundary from "antd/lib/alert/ErrorBoundary";
 export default function Edit() {
     const {id} = useParams()
     const {data:cityData,loading:cityLoading} = useFetch('cities')
@@ -16,7 +17,8 @@ export default function Edit() {
 
   if(placeLoading || cityLoading) return <Skeleton />
   return (
-    <div className="container mx-auto my-2">
+   <>
+         <div className="container mx-auto my-2">
         <div className="card">
             <div className="card-header">
                 Edit Place
@@ -92,5 +94,10 @@ export default function Edit() {
             </div>
         </div>
     </div>
+   
+  <ErrorBoundary>
+  <UploadImage id={id} />
+  </ErrorBoundary>
+   </>
   )
 }
