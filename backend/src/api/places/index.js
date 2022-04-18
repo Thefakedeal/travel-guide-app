@@ -170,7 +170,21 @@ router.delete("/:id", async (req, res, next) => {
     next(err);
   }
 });
-
+router.get("/:id/experiences", async(req,res, next)=>{
+  try{
+    const place = await db.place.findFirst({
+      where:{
+        id:Number(req.params.id)
+      }, 
+      include:{
+        experience: true
+      }
+    })
+    return res.json({data: place.experience})
+  }catch(err){
+    next(err)
+  }
+})
 router.post("/:id/experiences", experiencesExists, async (req, res, next) => {
   try {
     const errors = validationResult(req);
@@ -194,7 +208,7 @@ router.post("/:id/experiences", experiencesExists, async (req, res, next) => {
       },
       data: {
         experience: {
-          connect: experiencesObj,
+          set: experiencesObj,
         },
       },
       include: {
@@ -244,6 +258,20 @@ router.delete("/:id/experiences", experiencesExists, async (req, res, next) => {
     next(err);
   }
 });
+
+
+router.get('/:id/images', async(req,res,next)=>{
+  try{
+    const images = await db.image.findMany({
+      where:{
+        placeId: Number(req.params.id)
+      }
+    })
+    return res.json({data: images})
+  }catch(err){
+    next(err)
+  }
+})
 
 const photoUpload = upload.array("images", 10);
 
