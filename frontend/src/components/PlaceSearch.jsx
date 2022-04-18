@@ -1,8 +1,11 @@
-import { Button, Input } from "antd";
+import { Button, Input, AutoComplete } from "antd";
 import { useState } from "react";
 import CitySelect from "./CitySelect";
 import ExperienceSelect from "./ExperienceSelect";
 import {useNavigate, useSearchParams} from 'react-router-dom'
+import useDebounceValue from "../hooks/useDebounceValue";
+import { useEffect } from "react";
+import useFetch from "../hooks/useFetch";
 
 export default function PlaceSearch({className}) {
   const [search,setSearch] = useSearchParams()
@@ -10,9 +13,12 @@ export default function PlaceSearch({className}) {
   const [city, setCity] = useState(search.get('city')||null) 
   const [experience, setExperience] = useState(search.get('experience')||null) 
   const [destination, setDestination] = useState(search.get('destination')||'') 
-
+  const slowValue = useDebounceValue(destination,500);
   const navigate = useNavigate()
+  const {data} = useFetch("places",{experienceId:experience, cityId: city, name: slowValue})
 
+
+  
   const handleClick = ()=>{
     const query = {
       city,
@@ -46,7 +52,23 @@ export default function PlaceSearch({className}) {
       </div>
 
       <div className="col-md-4">
-        <Input placeholder="Destination" value={destination}  onChange={e=> setDestination(e.target.value)}/>
+        <AutoComplete placeholder="Destination"
+          onSelect={(value)=>setDestination(value)}
+         value={destination} 
+          style={{ width:"100%" }}
+        onSearch={value=>{
+        
+          setDestination(value)
+          
+        }}> 
+          {
+           data && data.data && Array.isArray(data.data) && data.data.map(place=>(
+              <AutoComplete.Option key={place.id} value={place.name}>
+                {place.name}
+              </AutoComplete.Option>
+            ))
+          }
+        </AutoComplete>
     </div>
      
       <div className="col-md-2">
