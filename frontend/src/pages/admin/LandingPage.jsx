@@ -1,4 +1,5 @@
-import {MdPlace} from 'react-icons/md'
+import {MdPlace, MdLocationCity} from 'react-icons/md'
+import {BiWorld} from 'react-icons/bi'
 import styles from '../../styles/admin/Home.module.scss'
 import {useNavigate} from 'react-router-dom'
 const links = [
@@ -6,7 +7,17 @@ const links = [
         title: "Places",
         url: "/admin/places",
         logo: <MdPlace  className={styles.hugeIcon} />
-    }
+    },
+    {
+        title: "Experiences",
+        url: "/admin/experiences",
+        logo: <BiWorld   className={styles.hugeIcon} />
+    },
+    {
+        title: "Cities",
+        url: "/admin/cities",
+        logo: <MdLocationCity   className={styles.hugeIcon} />
+    },
 ]
 
 export default function LandingPage() {

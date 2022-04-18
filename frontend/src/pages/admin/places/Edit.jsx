@@ -8,6 +8,7 @@ import { doPost } from "../../../utils/request";
 import {useParams} from 'react-router-dom';
 import UploadImage from '../../../components/section/admin/places/UploadImage'
 import ErrorBoundary from "antd/lib/alert/ErrorBoundary";
+import AddExperience from "../../../components/section/admin/places/AddExperience";
 export default function Edit() {
     const {id} = useParams()
     const {data:cityData,loading:cityLoading} = useFetch('cities')
@@ -94,10 +95,13 @@ export default function Edit() {
             </div>
         </div>
     </div>
+    
+  <AddExperience id={id}/>
    
   <ErrorBoundary>
   <UploadImage id={id} />
   </ErrorBoundary>
+
    </>
   )
 }
