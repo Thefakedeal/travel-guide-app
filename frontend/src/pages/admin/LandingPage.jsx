@@ -1,5 +1,6 @@
 import {MdPlace, MdLocationCity} from 'react-icons/md'
 import {BiWorld} from 'react-icons/bi'
+import {FaPlaneArrival} from 'react-icons/fa'
 import styles from '../../styles/admin/Home.module.scss'
 import {useNavigate} from 'react-router-dom'
 const links = [
@@ -17,6 +18,11 @@ const links = [
         title: "Cities",
         url: "/admin/cities",
         logo: <MdLocationCity   className={styles.hugeIcon} />
+    },
+    {
+        title: "Plans",
+        url: "/admin/plans",
+        logo: <FaPlaneArrival  className={styles.hugeIcon} />
     },
 ]
 
