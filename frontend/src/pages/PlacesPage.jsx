@@ -24,11 +24,11 @@ export default function PlacesPage() {
     return (
         <div className="container">
             <PlaceSearch className='my-4'/>
-            <div className="row g-4">
+            <div className="row gx-4 gy-4">
                 {
                      data.data.map(place=>(
                       <div className="col-md-4" key={Math.random()}>
-                          <PlaceCard  name={place.name} experience={place.experience} image={place.image} key={Math.random()} />
+                          <PlaceCard  id={place.id}  name={place.name} experience={place.experience} image={place.image} key={Math.random()} />
                       </div>
                   ))
                 }

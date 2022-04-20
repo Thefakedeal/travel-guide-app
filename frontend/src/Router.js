@@ -15,6 +15,8 @@ import AdminIndexExperiences from './pages/admin/experiences/Index'
 import AdminCreateExperiences from './pages/admin/experiences/Create'
 import AdminIndexCities from './pages/admin/cities/Index'
 import AdminCreateCities from './pages/admin/cities/Create'
+import Cities from './pages/Cities'
+import CityPage from './pages/CityPage'
 
 export default function Router() {
   return (
@@ -22,6 +24,8 @@ export default function Router() {
         <Route path="/" element={<Home />}>
           <Route index element={<LandingPage />} />
           <Route path="/places" element={<PlacesPage />} />
+          <Route path="/cities" element={<Cities />} />
+          <Route path="/cities/:id" element={<CityPage />} />
           <Route path="/login" element={<Guest element={<LoginPage />}/>} />
           <Route path="/register" element={<Guest element={<RegisterPage />}/>} />
         </Route>

@@ -16,6 +16,10 @@ const links = [
     path: '/places'
   },
   {
+    label: "Cities",
+    path: '/cities'
+  },
+  {
     label: "Login",
     path: '/login',
     guest: true

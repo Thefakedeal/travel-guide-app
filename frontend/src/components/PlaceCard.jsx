@@ -1,6 +1,6 @@
 import src from '../img/no-img.jpg'
 export default function PlaceCard({
-    name,experience=[], featured=false, image=[], className,...props
+    id,name,experience=[], featured=false, image=[], className,...props
 }) {
 
   const img = image.length===0?src:image[0].src;
