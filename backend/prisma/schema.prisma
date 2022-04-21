@@ -23,6 +23,14 @@ model User {
   city           City?     @relation(fields: [cityId], references: [id], onDelete: Cascade, onUpdate: NoAction)
   bookings       Booking[] @relation("user")
   agent_bookings Booking[] @relation("guide")
+
+  rated   Rating[] @relation("rated_by")
+  ratings Rating[] @relation("rated_to")
+
+  complaints Report[] @relation("reported_by")
+  reports    Report[] @relation("reported_to")
+
+
 }
 
 model Token {
@@ -42,6 +50,28 @@ model City {
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
   bookings  Booking[]
+}
+
+model Rating {
+  id      String @id @default(uuid())
+  userId  Int
+  guideId Int
+  user    User   @relation(name: "rated_by", fields: [userId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  guide   User   @relation(name: "rated_to", fields: [guideId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  stars   Int
+
+   @@unique([userId,guideId])
+}
+
+model Report {
+  id          String @id @default(uuid())
+  userId      Int
+  guideId     Int
+  user        User   @relation(name: "reported_by", fields: [userId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  guide       User   @relation(name: "reported_to", fields: [guideId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  description String @db.Text
+
+  @@unique([userId,guideId])
 }
 
 model Booking {
