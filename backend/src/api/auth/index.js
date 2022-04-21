@@ -64,7 +64,7 @@ router.post(
   validPassword,
   validEmailUnique,
   roleAuth,
-  //cityForGuides,
+  cityForGuides,
   async (req, res, next) => {
     try {
       const errors = validationResult(req);

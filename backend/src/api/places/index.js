@@ -83,6 +83,7 @@ router.get("/:id", async (req, res, next) => {
         id: Number(req.params.id),
       },
       include: {
+      	 city:true,
         experience: true,
         image: true,
       },
