@@ -1,17 +1,20 @@
 import styles from '../styles/Register.module.scss'
 import {Formik, Field, ErrorMessage, Form} from 'formik'
 import * as Yup from 'yup'
-import {Button, Input, Radio} from 'antd'
+import {Button, Input, Radio, Select, Skeleton} from 'antd'
 import { doPost } from '../utils/request'
 import { useState } from 'react'
 import useToken from '../hooks/useToken'
 import {Link, useNavigate} from 'react-router-dom'
+import useFetch from '../hooks/useFetch'
 
 export default function RegisterPage() {
     const [error, setError] = useState(null)
     const [token, setToken] = useToken();
+    const {data,loading,error:cityError} = useFetch("cities");
   const navigate = useNavigate()
-
+  if(loading) return <Skeleton />
+  if(cityError) return <span className="text-danger">{cityError.message}</span>
   return (
     <section className={styles.container}>
         <div className={styles.card}>
@@ -20,6 +23,7 @@ export default function RegisterPage() {
                     email: '',
                     name:'',
                     role: "VISITOR",
+                    cityId: null,
                     password:''
                  }}
                  validationSchema={
@@ -66,7 +70,7 @@ export default function RegisterPage() {
                  }}
             >
                {
-                   ({isSubmitting,handleSubmit, dirty, isValid})=>(
+                   ({isSubmitting,handleSubmit, dirty, isValid, values,setFieldValue})=>(
                     
                     <Form className='w-100 px-2'>
                     <h5 className=" text-center">Register</h5>
@@ -84,7 +88,22 @@ export default function RegisterPage() {
                     
                     <Field name="passwordConfirmation" type="password" className="my-2 w-100" placeholder="Re-Enter Password" as={Input.Password}/>
                     <ErrorMessage className='text-danger' component="span"  name='passwordConfirmation'/>
+                    {
+                        (values.role=='GUIDE') && (
+                            <div className="py-1">
+                                  <Select name="cityId" onChange={(value)=>setFieldValue('cityId',value)} className="my-2 w-100" placeholder="Select City" >
+                                    {
+                                        data && data.data.map(city=>(
+                                            <Select.Option  key={Math.random()} value={city.id}>{city.name}</Select.Option>
+                                        ))
+                                    }
+                                </Select>
+                                <ErrorMessage className='text-danger' component="span"  name='cityId'/>
 
+                            </div>
+                        )
+
+                    }
                     <div>
                     <div>What Are You?</div>
                     <Field name="role" as={Radio.Group}>
