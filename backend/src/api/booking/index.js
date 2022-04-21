@@ -30,7 +30,8 @@ router.post("/",userAuth, async(req,res,next)=>{
                     bookingPlanId: bookingPlanId,
                     date: new Date(date),
                     userId: req.user.id,
-                    khalti_token: response.data.idx
+                    khalti_token: response.data.idx, 
+                    mobile: response.data.user.mobile
                 }
             })
             return res.json({message: "Booking Was Successful"})
