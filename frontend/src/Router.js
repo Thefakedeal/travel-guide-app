@@ -20,6 +20,9 @@ import CityPage from './pages/CityPage'
 import PlansPage from './pages/admin/bookingPlans/Index'
 import BookingsPage from './pages/admin/bookings/Index'
 import Admin from './components/ProtectedRoutes/Admin'
+import Guide from './components/ProtectedRoutes/Guide'
+import Bookings from './pages/guide/Bookings'
+import MyBookings from './pages/MyBookings'
 export default function Router() {
   return (
     <Routes> 
@@ -27,10 +30,15 @@ export default function Router() {
           <Route index element={<LandingPage />} />
           <Route path="/places" element={<PlacesPage />} />
           <Route path="/cities" element={<Cities />} />
+          <Route path="/my-bookings" element={<Auth element={<MyBookings />} />} />
           <Route path="/cities/:id" element={<CityPage />} />
           <Route path="/bookings" element={<Auth element={<LoginPage />}/>} />
           <Route path="/login" element={<Guest element={<LoginPage />}/>} />
           <Route path="/register" element={<Guest element={<RegisterPage />}/>} />
+
+        </Route>
+        <Route path="/guide" element={<Guide element={<Home />}/>}>
+         <Route path="bookings" element={<Bookings />} />  
         </Route>
         <Route path="/admin" element={<Admin element={<Home />}/>}>
           <Route index element={<AdminLandingPage />} />

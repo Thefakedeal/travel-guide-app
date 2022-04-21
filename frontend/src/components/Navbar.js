@@ -29,7 +29,16 @@ const links = [
     label: "Admin",
     path: '/admin',
     admin: true
-  }
+  },
+  {
+    label: "Bookings",
+    path: '/guide/bookings',
+    guide: true
+  },
+  {
+    label: "My Bookings",
+    path: '/my-bookings'
+  },
 ]
 
 export default function Navbar() {
@@ -49,6 +58,7 @@ export default function Navbar() {
           links.filter(link=>{
             if(link.guest && user) return false;
             if(link.admin && !isAdmin) return false;
+            if(link.guide && (!user || user.role!=="GUIDE")) return false;
             return true;
           })
           .map(link=>(

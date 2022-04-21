@@ -16,6 +16,7 @@ export default function Navscreen({ handleClose, links = [] }) {
            .filter(link=>{
             if(link.guest && user) return false;
             if(link.admin && !isAdmin) return false;
+            if(link.guide && user && user.role!=="GUIDE") return false;
             return true;
           })
           .map((link) => (
