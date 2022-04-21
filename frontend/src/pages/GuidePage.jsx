@@ -130,7 +130,7 @@ function ShowReviews({id}){
                         <div className="card p-2">
                             <div className="row">
                             <div className="col-4">
-                                <Avatar src="https://joeschmoe.io/api/v1/random" alt={review.user.name} />
+                                <Avatar className="w-100 h-100" src="https://joeschmoe.io/api/v1/random" alt={review.user.name} />
                             </div>
                             <div className="col-8">
                                 <h5>{review.user.name}</h5>
