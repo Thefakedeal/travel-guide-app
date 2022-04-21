@@ -23,12 +23,14 @@ import Admin from './components/ProtectedRoutes/Admin'
 import Guide from './components/ProtectedRoutes/Guide'
 import Bookings from './pages/guide/Bookings'
 import MyBookings from './pages/MyBookings'
+import Place from './pages/Place'
 export default function Router() {
   return (
     <Routes> 
         <Route path="/" element={<Home />}>
           <Route index element={<LandingPage />} />
           <Route path="/places" element={<PlacesPage />} />
+          <Route path="/places/:id" element={<Place />} />
           <Route path="/cities" element={<Cities />} />
           <Route path="/my-bookings" element={<Auth element={<MyBookings />} />} />
           <Route path="/cities/:id" element={<CityPage />} />
