@@ -58,6 +58,7 @@ router.get("/", async (req, res, next) => {
         name:{
           contains: req.query.name !== null? req.query.name:undefined
         },
+        featured: (req.query.featured !== null && req.query.featured !== undefined)? Boolean(req.query.featured):undefined,
         cityId: req.query.cityId != null ? Number(req.query.cityId) : undefined,
         experience: experienceFilter,
       },

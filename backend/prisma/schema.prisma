@@ -11,16 +11,18 @@ datasource db {
 }
 
 model User {
-  id        Int      @id @default(autoincrement())
-  email     String   @unique
-  password  String
-  name      String
-  role      Role     @default(VISITOR)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  Token     Token[]
-  cityId    Int?
-  city      City?    @relation(fields: [cityId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  id             Int       @id @default(autoincrement())
+  email          String    @unique
+  password       String
+  name           String
+  role           Role      @default(VISITOR)
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+  Token          Token[]
+  cityId         Int?
+  city           City?     @relation(fields: [cityId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  bookings       Booking[] @relation("user")
+  agent_bookings Booking[] @relation("guide")
 }
 
 model Token {
@@ -37,8 +39,31 @@ model City {
 
   Place     Place[]
   User      User[]
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  bookings  Booking[]
+}
+
+model Booking {
+  id            Int         @id @default(autoincrement())
+  userId        Int
+  guideId       Int?
+  cityId        Int
+  date          DateTime    @db.Date
+  bookingPlanId String
+  user          User        @relation(name: "user", fields: [userId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  guide         User?       @relation(name: "guide", fields: [guideId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  city          City        @relation(fields: [cityId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  plan          BookingPlan @relation(fields: [bookingPlanId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  khalti_token  String
+}
+
+model BookingPlan {
+  id       String    @id @default(uuid())
+  name     String
+  days     Int
+  price    Int
+  bookings Booking[]
 }
 
 model Place {
@@ -57,7 +82,7 @@ model Image {
   id      Int    @id @default(autoincrement())
   src     String
   placeId Int
-  place   Place  @relation(fields: [placeId], references: [id], onUpdate: NoAction, onDelete: Cascade )
+  place   Place  @relation(fields: [placeId], references: [id], onUpdate: NoAction, onDelete: Cascade)
 }
 
 model Experience {
