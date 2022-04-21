@@ -5,6 +5,7 @@ const places = require('./places')
 const experiences = require('./experiences')
 const bookingPlans = require('./booking-plan')
 const bookings = require('./booking')
+const users = require('./user')
 
 router.use('/auth', auth);
 router.use('/cities', cities);
@@ -12,5 +13,6 @@ router.use('/places', places);
 router.use('/experiences', experiences);
 router.use('/booking-plans', bookingPlans);
 router.use('/bookings', bookings);
+router.use('/users', users);
 
 module.exports = router;

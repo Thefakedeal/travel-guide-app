@@ -77,11 +77,11 @@ router.get("/:id",adminAuth ,async(req,res,next)=>{
     }
 })
 
-router.post("/:id", adminAuth ,async(req,res,next)=>{
+router.put("/:id", adminAuth ,async(req,res,next)=>{
     try {
         const booking = await db.booking.update({
             where:{
-                id: req.params.id
+                id: Number(req.params.id)
             },
             data:{
                 guideId: Number(req.body.guideId)
