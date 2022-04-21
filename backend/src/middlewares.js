@@ -123,5 +123,6 @@ module.exports = {
     notFound,
     errorHandler,
     userAuth,
-    adminAuth
+    adminAuth, 
+    guideAuth
 };

@@ -1,7 +1,99 @@
 const router = require('express').Router();
 const db = require("../../client");
 const axios = require('axios').default
-const {userAuth} = require('../../middlewares')
+const {userAuth, adminAuth, guideAuth} = require('../../middlewares')
+
+router.get("/", adminAuth,async(req,res,next)=>{
+    try {
+        const bookings = await db.booking.findMany({
+            orderBy:{
+                date:"desc"
+            },
+            include:{
+                city: true,
+                plan: true,
+                guide: true,
+                user: true
+            },
+        })
+        res.json({data: bookings});
+    } catch (error) {
+        next(error)
+    }
+})
+
+router.get("/personal", userAuth,async(req,res,next)=>{
+    try {
+        const bookings = await db.booking.findMany({
+            orderBy:{
+                date:"desc"
+            },
+            include:{
+                city: true,
+                plan: true,
+                guide: true
+            },
+            where:{
+                userId: Number(req.user.id)
+            }
+        })
+        res.json({data: bookings});
+    } catch (error) {
+        next(error)
+    }
+})
+
+router.get("/guide", guideAuth,async(req,res,next)=>{
+    try {
+        const bookings = await db.booking.findMany({
+            orderBy:{
+                date:"desc"
+            },
+            include:{
+                city: true,
+                plan: true,
+                user: true
+            },
+            where:{
+                guideId: Number(req.user.id)
+            }
+        })
+        res.json({data: bookings});
+    } catch (error) {
+        next(error)
+    }
+})
+
+router.get("/:id",adminAuth ,async(req,res,next)=>{
+    try {
+        const booking = await db.booking.findFirst({
+            where:{
+                id: req.params.id
+            }
+        })
+        res.json({data: booking});
+    } catch (error) {
+        next(error)
+    }
+})
+
+router.post("/:id", adminAuth ,async(req,res,next)=>{
+    try {
+        const booking = await db.booking.update({
+            where:{
+                id: req.params.id
+            },
+            data:{
+                guideId: Number(req.body.guideId)
+            }
+        })
+        res.json({data: booking});
+    } catch (error) {
+        next(error)
+    }
+})
+
+
 
 router.post("/",userAuth, async(req,res,next)=>{
     try{
