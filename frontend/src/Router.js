@@ -18,6 +18,7 @@ import AdminCreateCities from './pages/admin/cities/Create'
 import Cities from './pages/Cities'
 import CityPage from './pages/CityPage'
 import PlansPage from './pages/admin/bookingPlans/Index'
+import BookingsPage from './pages/admin/bookings/Index'
 export default function Router() {
   return (
     <Routes> 
@@ -39,6 +40,7 @@ export default function Router() {
           <Route path="cities" element={<AdminIndexCities />} />
           <Route path="cities/create" element={<AdminCreateCities/>} />
           <Route path="plans" element={<PlansPage />} />
+          <Route path="bookings" element={<BookingsPage />} />
         </Route>
     </Routes>
   )

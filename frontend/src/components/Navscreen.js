@@ -4,7 +4,7 @@ import Backdrop from "./Backdrop";
 import { Link } from "react-router-dom";
 import useUser from "../hooks/useUser";
 export default function Navscreen({ handleClose, links = [] }) {
-  const {user} = useUser();
+  const {user, isAdmin} = useUser();
   return (
     <Backdrop className={`d-lg-none`}>
       <ImCross
@@ -13,8 +13,9 @@ export default function Navscreen({ handleClose, links = [] }) {
       />
       <ul className={styles.container}>
         {links
-          .filter((link) => {
-            if (link.guest && user) return false;
+           .filter(link=>{
+            if(link.guest && user) return false;
+            if(link.admin && !isAdmin) return false;
             return true;
           })
           .map((link) => (
