@@ -1,10 +1,12 @@
 import { Skeleton } from "antd";
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import useFetch from "../hooks/useFetch";
 import useToken from "../hooks/useToken";
 
 export default function Bookings() {
     const [token] = useToken()
+    const navigate = useNavigate()
   const { data, error, loading } = useFetch(
     "bookings/personal",
     {},
@@ -35,11 +37,13 @@ export default function Bookings() {
               <td>{new Date(booking.date).toLocaleDateString("en-US")}</td>
               <td>
                 {
-                    booking.guide? (`${booking.guide.name}-
-                    ${booking.guide.email}
-                    `) :""
+                    booking.guide? <span onClick={()=>navigate(`/guides/${booking.guide.id}`)}>
+                      {booking.guide.name}-
+                    {booking.guide.email}
+                    
+                    </span> :""
                 }
-            </td>
+             </td>
 
               <td>{booking.city.name}</td>
               <td>

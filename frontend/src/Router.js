@@ -24,6 +24,7 @@ import Guide from './components/ProtectedRoutes/Guide'
 import Bookings from './pages/guide/Bookings'
 import MyBookings from './pages/MyBookings'
 import Place from './pages/Place'
+import GuidePage from './pages/GuidePage'
 export default function Router() {
   return (
     <Routes> 
@@ -34,6 +35,7 @@ export default function Router() {
           <Route path="/cities" element={<Cities />} />
           <Route path="/my-bookings" element={<Auth element={<MyBookings />} />} />
           <Route path="/cities/:id" element={<CityPage />} />
+          <Route path="/guides/:id" element={<GuidePage />} />
           <Route path="/bookings" element={<Auth element={<LoginPage />}/>} />
           <Route path="/login" element={<Guest element={<LoginPage />}/>} />
           <Route path="/register" element={<Guest element={<RegisterPage />}/>} />

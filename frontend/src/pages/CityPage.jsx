@@ -16,10 +16,13 @@ export default function CityPage() {
 
   const goLogin = ()=>navigate('/login')
   const {data: cityData,loading: cityLoading, error:cityError} = useFetch(`cities/${id}`)
+  const {data: guidesData,loading: guideLoading, error:guideError} = useFetch(`guides`,{cityId:id});
   const {data: placesData,loading: placesLoading, error:placesError} = useFetch(`places`,{featured:true,cityId:id});
-  if(cityLoading || placesLoading) return <Skeleton />
+  
+  if(cityLoading || placesLoading || guideLoading) return <Skeleton />
   if(cityError) return <span className="text-danger">{cityError.message}</span>
   if(placesError) return <span className="text-danger">{placesError.message}</span>
+  if(guideError) return <span className="text-danger">{guideError.message}</span>
   return (
     <div className="container py-4">
         <div className="d-flex justify-content-between">
@@ -39,6 +42,23 @@ export default function CityPage() {
                 ))
             }
         </div>
+
+       <div className="py-2">
+       <h3>Guides</h3>
+        <div className="row gx-4 gy-4">
+            {
+              guidesData.data.map(guide=>(
+                <div 
+                  key={Math.random()}
+                  onClick={()=>navigate(`/guides/${guide.id}`)}
+                className="col-md-3 text-center py-2 card">
+                  {guide.name} <br />
+                  {guide.email}
+                </div>
+              ))
+            }
+        </div>
+       </div>
     </div>
   )
 }
