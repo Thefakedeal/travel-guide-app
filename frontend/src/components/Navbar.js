@@ -5,6 +5,7 @@ import styles from '../styles/Nav.module.scss'
 import Navscreen from './Navscreen'
 import useUser from '../hooks/useUser'
 import {FaLessThan} from 'react-icons/fa'
+import Logout from './Logout'
 
 const links = [
   {
@@ -37,6 +38,9 @@ export default function Navbar() {
   const close = ()=>setVisible(false)
   const {user, isAdmin} = useUser()
   const navigate = useNavigate()
+  
+
+  
   return (
     <header className={styles.container}>
        <FaLessThan onClick={()=>navigate(-1)} className='fs-2 text-white'/>
@@ -53,6 +57,7 @@ export default function Navbar() {
            
           )) 
           }
+          {user && <Logout />}
         </div>
         <GiHamburgerMenu onClick={open}  className='fs-1 ms-auto me-4 text-white d-lg-none'/>
        {visible &&  <Navscreen links={links} handleClose={close}/>}

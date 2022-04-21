@@ -19,6 +19,7 @@ import Cities from './pages/Cities'
 import CityPage from './pages/CityPage'
 import PlansPage from './pages/admin/bookingPlans/Index'
 import BookingsPage from './pages/admin/bookings/Index'
+import Admin from './components/ProtectedRoutes/Admin'
 export default function Router() {
   return (
     <Routes> 
@@ -27,10 +28,11 @@ export default function Router() {
           <Route path="/places" element={<PlacesPage />} />
           <Route path="/cities" element={<Cities />} />
           <Route path="/cities/:id" element={<CityPage />} />
+          <Route path="/bookings" element={<Auth element={<LoginPage />}/>} />
           <Route path="/login" element={<Guest element={<LoginPage />}/>} />
           <Route path="/register" element={<Guest element={<RegisterPage />}/>} />
         </Route>
-        <Route path="/admin" element={<Home />}>
+        <Route path="/admin" element={<Admin element={<Home />}/>}>
           <Route index element={<AdminLandingPage />} />
           <Route path="places" element={<AdminPlaces />} />
           <Route path="places/create" element={<AdminCreatePlaces />} />

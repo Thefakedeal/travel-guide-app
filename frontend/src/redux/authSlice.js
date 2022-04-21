@@ -20,6 +20,7 @@ const authSlice = createSlice({
             localStorage.removeItem('token')
             state.isLoggedin= false
             state.user= null
+            state.isAdmin= false
         },
         setUser(state,action){
             state.user = action.payload
