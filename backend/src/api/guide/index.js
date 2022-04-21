@@ -8,7 +8,7 @@ router.get("/",async(req,res,next)=>{
         const users = await db.user.findMany({
             where:{
                 role: "GUIDE",
-                cityId: req.body.cityId !==null?req.query.cityId:undefined
+                cityId: req.body.cityId !==null?Number(req.query.cityId):undefined
             }
         })
         return res.json({data: users})
@@ -23,8 +23,10 @@ router.get("/:id",async(req,res,next)=>{
             where:{
                 id: Number(req.params.id),
                 role: "GUIDE",
-        }
-        })
+        }, 
+        include:{
+        	city:true,
+        }})
         if(!user){
            return res.sendStatus(404);
         }
@@ -39,7 +41,7 @@ router.post("/:id/complaints",userAuth,async(req,res,next)=>{
         const report = await db.report.upsert({
             create:{
                 userId: Number(req.user.id),
-                guideIdId: Number(req.params.id),
+                guideId: Number(req.params.id),
                 description: req.body.description
             },
             update:{
@@ -75,7 +77,7 @@ router.get("/:id/complaints",adminAuth,async(req,res,next)=>{
 })
 
 
-router.get("/:id/reviews",userAuth,async(req,res,next)=>{
+router.get("/:id/reviews",async(req,res,next)=>{
     try {
         const aggregrate = await db.rating.aggregate({
             _avg:{
@@ -105,7 +107,7 @@ router.post("/:id/reviews",userAuth,async(req,res,next)=>{
         const review = await db.rating.upsert({
             create:{
                 userId: Number(req.user.id),
-                guideIdId: Number(req.params.id),
+                guideId: Number(req.params.id),
                 stars: Number(req.body.stars)
             },
             update:{

@@ -15,6 +15,6 @@ router.use('/experiences', experiences);
 router.use('/booking-plans', bookingPlans);
 router.use('/bookings', bookings);
 router.use('/users', users);
-router.use('/guides',guides );
+router.use('/guides',guides);
 
 module.exports = router;
