@@ -5,10 +5,10 @@ const upload = require("../../utils/multer");
 const nameRequired = body("name").notEmpty().trim();
 const { unlink } = require("fs");
 const path = require("path");
-const cityRequired = body("cityId")
+
 const {adminAuth} = require('../../middlewares')
 
-  .notEmpty()
+const cityRequired = body("cityId").notEmpty()
   .custom(async (value) => {
     if (!value) return Promise.reject("City Doesn't exist");
     const city = await db.city.findUnique({
