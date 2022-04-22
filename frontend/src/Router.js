@@ -19,6 +19,7 @@ import Cities from './pages/Cities'
 import CityPage from './pages/CityPage'
 import PlansPage from './pages/admin/bookingPlans/Index'
 import BookingsPage from './pages/admin/bookings/Index'
+import EventsPage from './pages/admin/events/Index'
 import Admin from './components/ProtectedRoutes/Admin'
 import Guide from './components/ProtectedRoutes/Guide'
 import Bookings from './pages/guide/Bookings'
@@ -55,6 +56,7 @@ export default function Router() {
           <Route path="cities/create" element={<AdminCreateCities/>} />
           <Route path="plans" element={<PlansPage />} />
           <Route path="bookings" element={<BookingsPage />} />
+          <Route path="events" element={<EventsPage />} />
         </Route>
     </Routes>
   )
