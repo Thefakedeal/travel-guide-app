@@ -6,6 +6,8 @@ const nameRequired = body("name").notEmpty().trim();
 const { unlink } = require("fs");
 const path = require("path");
 const cityRequired = body("cityId")
+const {adminAuth} = require('../../middlewares')
+
   .notEmpty()
   .custom(async (value) => {
     if (!value) return Promise.reject("City Doesn't exist");
@@ -100,6 +102,7 @@ router.get("/:id", async (req, res, next) => {
 
 router.post(
   "/",
+  adminAuth,
   nameRequired,
   cityRequired,
   featured,
@@ -129,6 +132,7 @@ router.post(
 
 router.put(
   "/:id",
+  adminAuth,
   nameRequired,
   cityRequired,
   featured,
@@ -159,7 +163,7 @@ router.put(
   }
 );
 
-router.delete("/:id", async (req, res, next) => {
+router.delete("/:id", adminAuth,async (req, res, next) => {
   try {
     const place = await db.place.delete({
       where: {
@@ -187,7 +191,7 @@ router.get("/:id/experiences", async(req,res, next)=>{
     next(err)
   }
 })
-router.post("/:id/experiences", experiencesExists, async (req, res, next) => {
+router.post("/:id/experiences",adminAuth ,experiencesExists, async (req, res, next) => {
   try {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -224,7 +228,7 @@ router.post("/:id/experiences", experiencesExists, async (req, res, next) => {
   }
 });
 
-router.delete("/:id/experiences", experiencesExists, async (req, res, next) => {
+router.delete("/:id/experiences", adminAuth,experiencesExists, async (req, res, next) => {
   try {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -324,7 +328,7 @@ router.post(
   }
 );
 
-router.delete("/images/:id", async (req, res, next) => {
+router.delete("/images/:id", adminAuth,async (req, res, next) => {
   try {
     const image = await db.image.delete({
       where: {

@@ -2,6 +2,7 @@ const router  = require('express').Router();
 const {body, validationResult} = require('express-validator')
 const db = require('../../client')
 const nameRequired = body('name').notEmpty().trim();
+const {adminAuth} = require('../../middlewares')
 
 
 router.get('/', async (req,res,next)=>{
@@ -37,7 +38,7 @@ router.get('/:id', async (req,res,next)=>{
 })
 
 
-router.post('/',nameRequired , async (req,res, next)=>{
+router.post('/',adminAuth,nameRequired , async (req,res, next)=>{
     try{
         const city = await db.city.create({
             data:{
@@ -53,7 +54,7 @@ router.post('/',nameRequired , async (req,res, next)=>{
 })
 
 
-router.put('/:id', async (req,res, next)=>{
+router.put('/:id', adminAuth,async (req,res, next)=>{
     try{
         const city = await db.city.update({
             where:{
@@ -72,7 +73,7 @@ router.put('/:id', async (req,res, next)=>{
 })
 
 
-router.delete('/:id', async (req,res, next)=>{
+router.delete('/:id', adminAuth,async (req,res, next)=>{
     try{
         const city = await db.city.delete({
             where:{

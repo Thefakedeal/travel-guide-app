@@ -1,6 +1,7 @@
 const router  = require('express').Router();
 const {body, validationResult} = require('express-validator')
 const db = require('../../client')
+const {adminAuth} = require('../../middlewares')
 
 const typeRequired = body('type').notEmpty().trim();
 
@@ -30,7 +31,7 @@ router.get('/:id', async (req,res,next)=>{
     }
 })
 
-router.post('/',typeRequired , async (req,res, next)=>{
+router.post('/',adminAuth,typeRequired , async (req,res, next)=>{
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res
@@ -52,7 +53,7 @@ router.post('/',typeRequired , async (req,res, next)=>{
     }
 })
 
-router.put('/:id',typeRequired ,async (req,res, next)=>{
+router.put('/:id',adminAuth,typeRequired ,async (req,res, next)=>{
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res
@@ -77,7 +78,7 @@ router.put('/:id',typeRequired ,async (req,res, next)=>{
     }
 })
 
-router.delete('/:id', async (req,res, next)=>{
+router.delete('/:id',adminAuth ,async (req,res, next)=>{
     try{
         const experience = await db.experience.delete({
             where:{
