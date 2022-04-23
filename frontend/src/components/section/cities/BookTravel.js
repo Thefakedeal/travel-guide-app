@@ -38,7 +38,7 @@ export default function BookTravel({ id, cityName, visible, handleClose }) {
                 onSubmit={async (values, { setSubmitting }) => {
                     let config = {
                         // replace this key with yours
-                        publicKey: "test_public_key_860a54e96fb1400881691b5eeab04315",
+                        publicKey: process.env.REACT_APP_KHALTI_PUBLIC_KEY,
                         productIdentity: values.bookingPlanId,
                         productName: cityName,
                         productUrl: window.location.href,
