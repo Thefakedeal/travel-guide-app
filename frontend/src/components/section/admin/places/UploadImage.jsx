@@ -1,49 +1,50 @@
 import React from "react";
 import {  Form, Formik } from "formik";
-import { useState } from "react";
 import { doPost, doPostForm } from "../../../../utils/request";
 import useToken from "../../../../hooks/useToken";
 import { Button, notification, Skeleton } from "antd";
 import useFetch from "../../../../hooks/useFetch";
 import styles from '../../../../styles/admin/place/section/UploadImage.module.scss'
 import {GoTrashcan} from 'react-icons/go'
+import { useState,useRef, useCallback } from "react";
 export default function UploadImage({ id }) {
-  const [files, setFiles] = useState([]);
+ 
   const [token] = useToken();
   
+
   
-
-  const { data, error, loading, refresh } = useFetch(`places/${id}/images`);
-
-  const  handleDelete = async (id) =>{
-    if(!window.confirm("Are You Sure")) return;
-
-    const response =await doPost({method:'DELETE',path:`places/images/${id}`})
-    if(response.ok){
-      notification.success({
-        message:"Image Deleted"
-      })
-      return refresh()
-    }
-    notification.error({
-      message:"Failed To Delete"
-    })
-  }
-  if(loading) return <Skeleton />
-  if(error) return <span className="text-danger">{error}</span>
   return (
     <div className="container">
       <div className="card">
         <div className="card-header">Images</div>
         <div className="card-body">
           <div className="container p-4">
-            <Formik
+            <UploadForm id={id} token={token}/>
+          </div>
+          <div className="container p-4">
+           <ImageGrid id={id} token={token}/>
+          </div>            
+        </div>
+      </div>
+    </div>
+  );
+}
+
+
+function UploadForm({id, token}){
+  const upload = useRef(null)
+  const [files, setFiles] = useState([]);
+
+  
+  
+  return(
+    <Formik
               initialValues={{}}
               onSubmit={async (values, { setSubmitting, setErrors }) => {
                 try {
                   const form = new FormData();
-
-                  for (const image of files) {
+                  
+                  for (const image of upload.current.files) {
                     form.append("images", image);
                   }
 
@@ -58,7 +59,7 @@ export default function UploadImage({ id }) {
                     return notification.success({
                       message: "Images added Successfully",
                     });
-                    refresh()
+                  
                   }
                   const body = await response.json();
                   notification.error({
@@ -92,9 +93,11 @@ export default function UploadImage({ id }) {
                       type="file"
                       name="images"
                       id="img"
-                      onChange={(e) => {
-                        e.preventDefault()
-                        setFiles(e.target.files);
+                      ref={upload}
+                      accept="image/*"
+                      
+                      onChange={(e)=>{
+                        setFiles(e.target.files)
                       }}
                       multiple
                     />
@@ -117,21 +120,40 @@ export default function UploadImage({ id }) {
                 </Form>
               )}
             </Formik>
-          </div>
-          <div className="container p-4">
-            <div className="row text-center gx-4 gy-4">
-            {
-              data.data.map(img=>(
-                <ImageShow img={img} key={Math.random()} handleDelete={handleDelete}/>
-              ))
-              
-            }
-            </div>
-          </div>            
-        </div>
-      </div>
+  )
+}
+
+function ImageGrid({id, token}){
+
+  const { data, error, loading, refresh } = useFetch(`places/${id}/images`);
+
+  const  handleDelete = async (id) =>{
+    if(!window.confirm("Are You Sure")) return;
+
+    const response =await doPost({method:'DELETE',path:`places/images/${id}`,token})
+    if(response.ok){
+      notification.success({
+        message:"Image Deleted"
+      })
+      return refresh()
+    }
+    notification.error({
+      message:"Failed To Delete"
+    })
+  }
+  if(loading) return <Skeleton />
+  if(error) return <span className="text-danger">{error}</span>
+
+  return (
+    <div className="row text-center gx-4 gy-4">
+    {
+      data.data.map(img=>(
+        <ImageShow img={img} key={Math.random()} handleDelete={handleDelete}/>
+      ))
+      
+    }
     </div>
-  );
+  )
 }
 
 
